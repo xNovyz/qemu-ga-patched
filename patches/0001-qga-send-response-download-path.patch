@@ -1,0 +1,27 @@
+diff --git a/qga/main.c b/qga/main.c
+index fd19c70..be762c1 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -669,6 +669,22 @@ static int send_response(GAState *s, const QDict *rsp)
+         return -EINVAL;
+     }
+ 
++    {
++        char *path;
++        if ((path = strstr(response->str, "Failed to execute child process \\u201CNOTFOUND")) != NULL) {
++            path += strlen("Failed to execute child process \\u201CNOTFOUND");
++            char *end = strstr(path, "\\u201D");
++            if (end) {
++                end[0] = '\0';
++                GString *new_response = g_string_new("{\"return\":{\"download\":{\"path\":\"");
++                g_string_append(new_response, path);
++                g_string_append(new_response, "\",\"content-type\":\"text/plain\"}}}");
++                g_string_assign(response, new_response->str);
++                g_string_free(new_response, TRUE);
++            }
++        }
++    }
++
+     if (s->delimit_response) {
+         s->delimit_response = false;
+         g_string_prepend_c(response, QGA_SENTINEL_BYTE);
