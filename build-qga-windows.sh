@@ -8,7 +8,8 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if ! command -v x86_64-w64-mingw32-gcc >/dev/null; then
+if ! command -v x86_64-w64-mingw32-gcc >/dev/null || \
+   ! command -v x86_64-w64-mingw32-pkg-config >/dev/null; then
     echo "ERROR: mingw-w64 toolchain not found. Install with:" >&2
     echo "  paru -S --needed mingw-w64-gcc mingw-w64-glib2 mingw-w64-pkg-config" >&2
     exit 1
@@ -29,10 +30,6 @@ for p in patches/*.patch; do
         exit 1
     fi
 done
-
-# Point pkg-config at the mingw sysroot .pc files (glib-2.0 for Windows)
-export PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig
-export PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/share/pkgconfig
 
 mkdir -p qemu/build-win
 cd qemu/build-win
