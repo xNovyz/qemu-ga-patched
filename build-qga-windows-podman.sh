@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 SRC="$(pwd)"
 
-podman run --rm -v "$SRC:/src:Z" -w /src fedora:latest bash -s <<'EOS'
+podman run --rm -i -v "$SRC:/src:Z" -w /src fedora:latest bash -s <<'EOS'
 set -euo pipefail
 dnf install -y -q mingw64-gcc mingw64-glib2 meson ninja-build git python3 perl make glib2-devel diffutils
 

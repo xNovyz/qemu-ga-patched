@@ -39,7 +39,7 @@ if [ ! -f build.ninja ]; then
         --enable-guest-agent \
         --disable-werror
 fi
-make -j"$(nproc)" qemu-ga.exe
+make -j"$(nproc)" qemu-ga
 echo "Built: $(pwd)/qga/qemu-ga.exe"
 echo "Note: qemu-ga.exe needs the mingw glib DLLs at runtime (e.g. libglib-2.0-0.dll"
 echo "from /usr/x86_64-w64-mingw32/bin) unless you ship them alongside the exe."
